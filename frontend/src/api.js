@@ -45,4 +45,30 @@ export const api = {
   // Project types
   getProjectTypes: () => request("/project-types"),
   getProjectsByType: (typeId) => request(`/projects/by-type/${typeId}`),
+
+  // Publication types
+  getPublicationTypes: () => request("/publication-types"),
+
+  // Authors
+  getAuthors: () => request("/authors"),
+  createAuthor: (body) =>
+    request("/authors", { method: "POST", body: JSON.stringify(body) }),
+  updateAuthor: (id, body) =>
+    request(`/authors/${id}`, { method: "PUT", body: JSON.stringify(body) }),
+  deleteAuthor: (id) => request(`/authors/${id}`, { method: "DELETE" }),
+
+  // Publications
+  getPublications: () => request("/publications"),
+  getPublication: (id) => request(`/publications/${id}`),
+  createPublication: (body) =>
+    request("/publications", { method: "POST", body: JSON.stringify(body) }),
+  updatePublication: (id, body) =>
+    request(`/publications/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(body),
+    }),
+  deletePublication: (id) =>
+    request(`/publications/${id}`, { method: "DELETE" }),
+
+  getPublicationsByType: (typeId) => request(`/publications/by-type/${typeId}`),
 };

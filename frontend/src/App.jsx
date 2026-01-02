@@ -5,6 +5,9 @@ import CreateUserPage from "./pages/CreateUserPage.jsx";
 import ProjectsPage from "./pages/ProjectsPage.jsx";
 import CreateProjectPage from "./pages/CreateProjectPage.jsx";
 import ProjectsByTypePage from "./pages/ProjectsByTypePage.jsx";
+import PublicationsPage from "./pages/PublicationsPage.jsx";
+import CreatePublicationPage from "./pages/CreatePublicationPage.jsx";
+import PublicationsByTypePage from "./pages/PublicationsByTypePage.jsx";
 
 export default function App() {
   return (
@@ -17,6 +20,16 @@ export default function App() {
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/projects/type/:typeId" element={<ProjectsByTypePage />} />
         <Route path="/projects/create" element={<CreateProjectPage />} />
+        <Route path="/publications" element={<PublicationsPage />} />
+        <Route
+          path="/publications/create"
+          element={<CreatePublicationPage />}
+        />
+        <Route
+          path="/publications/type/:typeId"
+          element={<PublicationsByTypePage />}
+        />
+
         <Route
           path="*"
           element={<div style={{ padding: 24 }}>Not found</div>}

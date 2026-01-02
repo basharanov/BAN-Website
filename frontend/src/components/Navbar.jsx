@@ -16,14 +16,23 @@ export default function Navbar() {
   const [types, setTypes] = useState([]);
   const [loadingTypes, setLoadingTypes] = useState(true);
 
+  const [pubTypes, setPubTypes] = useState([]);
+  const [loadingPubTypes, setLoadingPubTypes] = useState(true);
+
   useEffect(() => {
     async function loadTypes() {
       setLoadingTypes(true);
+      setLoadingPubTypes(true);
       try {
-        const data = await api.getProjectTypes();
-        setTypes(data);
+        const [projectTypes, publicationTypes] = await Promise.all([
+          api.getProjectTypes(),
+          api.getPublicationTypes(),
+        ]);
+        setTypes(projectTypes);
+        setPubTypes(publicationTypes);
       } finally {
         setLoadingTypes(false);
+        setLoadingPubTypes(false);
       }
     }
     loadTypes();
@@ -69,10 +78,6 @@ export default function Navbar() {
             boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
           }}
         >
-          {/* <div style={{ fontSize: 12, opacity: 0.7, marginBottom: 6 }}>
-            Filter by type
-          </div> */}
-
           {loadingTypes ? (
             <div style={{ padding: 8 }}>Loading…</div>
           ) : types.length === 0 ? (
@@ -105,12 +110,72 @@ export default function Navbar() {
         Create Project
       </NavLink>
 
+      {/* Publications dropdown (NEW) */}
+      <div style={{ position: "relative" }} className="publications-dropdown">
+        <NavLink to="/publications" style={linkStyle}>
+          Publications
+        </NavLink>
+
+        <div
+          className="publications-dropdown-menu"
+          style={{
+            position: "absolute",
+            top: "100%",
+            left: 0,
+            minWidth: 320,
+            background: "white",
+            border: "1px solid #ddd",
+            borderRadius: 8,
+            padding: 8,
+            zIndex: 1000,
+            boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
+          }}
+        >
+          {loadingPubTypes ? (
+            <div style={{ padding: 8 }}>Loading…</div>
+          ) : pubTypes.length === 0 ? (
+            <div style={{ padding: 8 }}>No types found.</div>
+          ) : (
+            <div style={{ display: "grid", gap: 6 }}>
+              {pubTypes.map((t) => (
+                <NavLink
+                  key={t.id}
+                  to={`/publications/type/${t.id}`}
+                  style={({ isActive }) => ({
+                    padding: "8px 10px",
+                    borderRadius: 8,
+                    textDecoration: "none",
+                    color: "black",
+                    background: isActive ? "#f2f2f2" : "white",
+                    border: "1px solid #eee",
+                    display: "block",
+                  })}
+                >
+                  {t.name}
+                </NavLink>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <NavLink to="/publications/create" style={linkStyle}>
+        Create Publication
+      </NavLink>
+
       {/* hover CSS */}
       <style>{`
         .projects-dropdown-menu {
           display: none;
         }
         .projects-dropdown:hover .projects-dropdown-menu {
+          display: block;
+        }
+
+        .publications-dropdown-menu {
+          display: none;
+        }
+        .publications-dropdown:hover .publications-dropdown-menu {
           display: block;
         }
       `}</style>

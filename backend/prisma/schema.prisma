@@ -13,34 +13,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
   emails    Email[]
   phones    Phone[]
   deletedAt DateTime?
 }
-  
-model Email{
-  id Int @id @default(autoincrement()) 
-  email String @unique 
-  userId Int 
-  user User @relation(fields: [userId], references: [id]) 
-  } 
-  
-  model Phone{ 
-  id Int @id @default(autoincrement()) 
-  phone String @unique 
-  userId Int 
-  user User @relation(fields: [userId], references: [id]) 
-  }
+
+model Email {
+  id     Int    @id @default(autoincrement())
+  email  String @unique
+  userId Int
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Phone {
+  id     Int    @id @default(autoincrement())
+  phone  String @unique
+  userId Int
+  user   User   @relation(fields: [userId], references: [id])
+}
 
 model ProjectType {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique
+  id   Int    @id @default(autoincrement())
+  name String @unique
 
-  projects  Project[]
+  projects Project[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -56,13 +55,82 @@ model Project {
   description String
   websiteUrl  String?
 
-  typeId      Int
-  type        ProjectType @relation(fields: [typeId], references: [id], onDelete: Restrict)
+  typeId Int
+  type   ProjectType @relation(fields: [typeId], references: [id], onDelete: Restrict)
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   @@index([typeId])
   @@map("projects")
+}
+
+model PublicationType {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  publications Publication[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@map("publication_types")
+}
+
+model Publication {
+  id          Int             @id @default(autoincrement())
+  year        Int
+  title       String
+  description String? // ако искаш задължително: махни "?"
+  typeId      Int
+  type        PublicationType @relation(fields: [typeId], references: [id])
+
+  authors PublicationAuthor[] // връзката към автори (many-to-many)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([year])
+  @@index([typeId])
+  @@map("publications")
+}
+
+model Author {
+  id       Int     @id @default(autoincrement())
+  fullName String
+  email    String? // по желание
+  orcid    String? // по желание
+
+  publications PublicationAuthor[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  // Ако решиш, че имената трябва да са уникални (не винаги е добра идея):
+  // @@unique([fullName])
+
+  @@index([fullName])
+  @@map("authors")
+}
+
+model PublicationAuthor {
+  publicationId Int
+  authorId      Int
+  order         Int // ред на авторите: 1,2,3...
+
+  publication Publication @relation(fields: [publicationId], references: [id])
+  author      Author      @relation(fields: [authorId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@id([publicationId, authorId]) // уникална двойка (публикация, автор)
+  @@index([authorId])
+  @@index([publicationId, order]) // полезно за сортиране на авторите по ред
+  @@map("publication_authors")
 }
