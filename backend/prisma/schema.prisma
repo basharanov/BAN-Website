@@ -35,3 +35,34 @@ model Email{
   userId Int 
   user User @relation(fields: [userId], references: [id]) 
   }
+
+model ProjectType {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+
+  projects  Project[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@map("project_types")
+}
+
+model Project {
+  id          Int       @id @default(autoincrement())
+  startDate   DateTime
+  endDate     DateTime?
+  description String
+  websiteUrl  String?
+
+  typeId      Int
+  type        ProjectType @relation(fields: [typeId], references: [id], onDelete: Restrict)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  @@index([typeId])
+  @@map("projects")
+}

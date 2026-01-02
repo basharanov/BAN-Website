@@ -33,4 +33,16 @@ export const api = {
   updateUser: (id, body) =>
     request(`/users/${id}`, { method: "PUT", body: JSON.stringify(body) }),
   deleteUser: (id) => request(`/users/${id}`, { method: "DELETE" }),
+
+  // Projects
+  getProjects: () => request("/projects"),
+  createProject: (body) =>
+    request("/projects", { method: "POST", body: JSON.stringify(body) }),
+  updateProject: (id, body) =>
+    request(`/projects/${id}`, { method: "PUT", body: JSON.stringify(body) }),
+  deleteProject: (id) => request(`/projects/${id}`, { method: "DELETE" }),
+
+  // Project types
+  getProjectTypes: () => request("/project-types"),
+  getProjectsByType: (typeId) => request(`/projects/by-type/${typeId}`),
 };
