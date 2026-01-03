@@ -162,6 +162,13 @@ export default function Navbar() {
       <NavLink to="/publications/create" style={linkStyle}>
         Create Publication
       </NavLink>
+      <NavLink to="/e-library" style={linkStyle}>
+        E-Library
+      </NavLink>
+
+      <NavLink to="/e-library/create" style={linkStyle}>
+        Create E-Library Item
+      </NavLink>
 
       {/* hover CSS */}
       <style>{`

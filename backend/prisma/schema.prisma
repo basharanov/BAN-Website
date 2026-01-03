@@ -134,3 +134,19 @@ model PublicationAuthor {
   @@index([publicationId, order]) // полезно за сортиране на авторите по ред
   @@map("publication_authors")
 }
+
+model ELibraryItem {
+  id           Int     @id @default(autoincrement())
+  author       String
+  title        String
+  organization String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([author])
+  @@index([title])
+  @@index([organization])
+  @@map("e_library_items")
+}

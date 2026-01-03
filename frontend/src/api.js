@@ -71,4 +71,12 @@ export const api = {
     request(`/publications/${id}`, { method: "DELETE" }),
 
   getPublicationsByType: (typeId) => request(`/publications/by-type/${typeId}`),
+
+  // E-Library
+  getELibraryItems: () => request("/e-library"),
+  createELibraryItem: (body) =>
+    request("/e-library", { method: "POST", body: JSON.stringify(body) }),
+  updateELibraryItem: (id, body) =>
+    request(`/e-library/${id}`, { method: "PUT", body: JSON.stringify(body) }),
+  deleteELibraryItem: (id) => request(`/e-library/${id}`, { method: "DELETE" }),
 };

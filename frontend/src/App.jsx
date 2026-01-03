@@ -8,6 +8,8 @@ import ProjectsByTypePage from "./pages/ProjectsByTypePage.jsx";
 import PublicationsPage from "./pages/PublicationsPage.jsx";
 import CreatePublicationPage from "./pages/CreatePublicationPage.jsx";
 import PublicationsByTypePage from "./pages/PublicationsByTypePage.jsx";
+import ELibraryPage from "./pages/ELibraryPage.jsx";
+import CreateELibraryPage from "./pages/CreateELibraryPage.jsx";
 
 export default function App() {
   return (
@@ -21,6 +23,8 @@ export default function App() {
         <Route path="/projects/type/:typeId" element={<ProjectsByTypePage />} />
         <Route path="/projects/create" element={<CreateProjectPage />} />
         <Route path="/publications" element={<PublicationsPage />} />
+        <Route path="/e-library" element={<ELibraryPage />} />
+        <Route path="/e-library/create" element={<CreateELibraryPage />} />
         <Route
           path="/publications/create"
           element={<CreatePublicationPage />}
